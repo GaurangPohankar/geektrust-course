@@ -1,5 +1,5 @@
 from src.constants import *
-from src.helpers.utility import is_duplicate_item
+from src.helpers.utility import CourseUtility as utility 
 
 class CourseService:
 
@@ -21,7 +21,7 @@ class CourseService:
         return COURSE_OFFERIN_ID_PREFIX + course_name + "-" + instructor
 
     def is_duplicate_course(self, tbl_course, course_name, instructor):
-        return is_duplicate_item(tbl_course, "course_name", course_name) or is_duplicate_item(tbl_course, "instructor", instructor)
+        return utility.is_duplicate_item(tbl_course, "course_name", course_name) or utility.is_duplicate_item(tbl_course, "instructor", instructor)
 
     def add_course_to_table(self, tbl_course, course_offering_id, course_name, instructor, date, minEmployee, maxEmployee):
         tbl_course.append({

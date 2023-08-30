@@ -1,4 +1,4 @@
-from src.helpers.utility import get_registration_count, get_course_by_id, is_duplicate_registration, is_course_cancelled
+from src.helpers.utility import RegistrationUtility as utility
 from src.constants import INPUT_ERROR, COURSE_FULL_ERROR, STATUS_PENDING, STATUS_ACCEPTED, COURSE_REGISTRATION_ID_PREFIX
 
 class RegisterService:
@@ -7,11 +7,11 @@ class RegisterService:
         email, course_offering_id = parts[1], parts[2]
         name = self.extract_name_from_email(email)
 
-        if is_duplicate_registration(tbl_register, email, course_offering_id):
+        if utility.is_duplicate_registration(tbl_register, email, course_offering_id):
             return INPUT_ERROR
 
-        registration_count = get_registration_count(tbl_register, course_offering_id)
-        course = get_course_by_id(tbl_course, course_offering_id)
+        registration_count = utility.get_registration_count(tbl_register, course_offering_id)
+        course = utility.get_course_by_id(tbl_course, course_offering_id)
         if not course:
             return INPUT_ERROR
 
@@ -24,7 +24,7 @@ class RegisterService:
         found_course_name = course['course_name']
         max_course_limit = course['maxEmployee']
 
-        if is_course_cancelled(course):
+        if utility.is_course_cancelled(course):
             return INPUT_ERROR
         elif registration_count >= int(max_course_limit):
             return COURSE_FULL_ERROR

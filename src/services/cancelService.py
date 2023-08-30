@@ -1,5 +1,5 @@
 from src.constants import STATUS_CANCEL_ACCEPTED, STATUS_CANCEL_REJECTED
-from src.helpers.utility import cal_is_registration_cancelled, cal_update_status
+from src.helpers.utility import CancelUtility as utility 
 
 class CancelService:
 
@@ -13,7 +13,7 @@ class CancelService:
             return f"{course_registration_id} {STATUS_CANCEL_REJECTED}"
 
     def is_registration_cancelled(self, tbl_register, course_registration_id):
-        return cal_is_registration_cancelled(tbl_register, course_registration_id)
+        return utility.cal_is_registration_cancelled(tbl_register, course_registration_id)
 
     def update_registration_status(self, tbl_register, course_registration_id, status):
-        return cal_update_status(tbl_register, course_registration_id, status)
+        return utility.cal_update_status(tbl_register, course_registration_id, status)
