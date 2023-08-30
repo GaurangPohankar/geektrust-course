@@ -2,18 +2,11 @@ from src.constants import *
 from datetime import datetime
 
 
-# def is_course_cancelled(course):
-#     return course and course['status'] == STATUS_CANCELLED
-
-
-
-
-
 class CancelUtility:
     @staticmethod
     def cal_is_registration_cancelled(tbl_register, course_registration_id):
         for registration in tbl_register:
-            if registration['course_registration_id'] == course_registration_id and registration['status'] != 'CONFIRMED':
+            if registration['course_registration_id'] == course_registration_id and registration['status'] != STATUS_CONFIRMED:
                 return True
         return False
 
@@ -49,7 +42,7 @@ class RegistrationUtility:
         count = 0
         for registration in tbl_register:
             if registration['course_offering_id'] == course_offering_id:
-                if registration['status'] == 'PENDING' or registration['status'] == 'CONFIRMED':
+                if registration['status'] == STATUS_PENDING or registration['status'] == STATUS_CONFIRMED:
                     count += 1
         return count
 
