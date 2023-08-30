@@ -7,11 +7,11 @@ class RegisterService:
         email, course_offering_id = parts[1], parts[2]
         name = self.extract_name_from_email(email)
 
-        if self.is_duplicate_registration(tbl_register, email, course_offering_id):
+        if is_duplicate_registration(tbl_register, email, course_offering_id):
             return INPUT_ERROR
 
-        registration_count = self.get_registration_count(tbl_register, course_offering_id)
-        course = self.get_course_by_id(tbl_course, course_offering_id)
+        registration_count = get_registration_count(tbl_register, course_offering_id)
+        course = get_course_by_id(tbl_course, course_offering_id)
         if not course:
             return INPUT_ERROR
 
@@ -19,15 +19,6 @@ class RegisterService:
 
     def extract_name_from_email(self, email):
         return email.split('@')[0]
-
-    def is_duplicate_registration(self, tbl_register, email, course_offering_id):
-        return is_duplicate_registration(tbl_register, email, course_offering_id)
-
-    def get_registration_count(self, tbl_register, course_offering_id):
-        return get_registration_count(tbl_register, course_offering_id)
-
-    def get_course_by_id(self, tbl_course, course_offering_id):
-        return get_course_by_id(tbl_course, course_offering_id)
 
     def process_registration(self, tbl_register, course, name, email, registration_count, course_offering_id):
         found_course_name = course['course_name']

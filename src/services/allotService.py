@@ -14,11 +14,11 @@ class AllotService:
         registration_count = self.get_registration_count(tbl_register, course_offering_id)
 
         course_status = STATUS_ONLINE
-        if self.is_course_cancelled(course, current_date, registration_count, course['minEmployee']):
+        if allot_is_course_cancelled(course, current_date, registration_count, course['minEmployee']):
             course_status = STATUS_CANCELLED
             course['status'] = STATUS_CANCELLED
 
-        updated_entries = self.update_registration_statuses(tbl_register, course_offering_id, course_status)
+        updated_entries = update_statuses(tbl_register, course_offering_id, course_status)
         updated_entries.sort(key=lambda entry: entry['course_registration_id'])
 
         alloted_str = self.format_alloted_entries(updated_entries, course)
@@ -31,12 +31,6 @@ class AllotService:
             if registration['course_offering_id'] == course_offering_id
             and (registration['status'] == STATUS_PENDING or registration['status'] == STATUS_CONFIRMED)
         )
-
-    def is_course_cancelled(self, course, current_date, registration_count, min_course_limit):
-        return allot_is_course_cancelled(course, current_date, registration_count, min_course_limit)
-
-    def update_registration_statuses(self, tbl_register, course_offering_id, course_status):
-        return update_statuses(tbl_register, course_offering_id, course_status)
 
     def format_alloted_entries(self, updated_entries, course):
         return "\n".join(

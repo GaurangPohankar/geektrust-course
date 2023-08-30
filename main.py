@@ -13,6 +13,12 @@ class LMSApp:
         self.register_controller = RegisterController()
         self.allot_controller = AllotController()
         self.cancel_controller = CancelController()
+        self.command_handlers = {
+            (6, ADD_COURSE_COMMAND): self.add_course,
+            (3, REGISTER_COMMAND): self.register_course,
+            (2, ALLOT_COMMAND): self.allot_course,
+            (2, CANCEL_COMMAND): self.cancel_course
+        }
 
     def process_commands(self, input_file):
         with open(input_file, 'r') as file:
@@ -22,17 +28,15 @@ class LMSApp:
     def process_command(self, command):
         if command == "QUIT":
             return
+
         parts = command.split()
-        if len(parts) == 6 and parts[0] == ADD_COURSE_COMMAND:
-            self.add_course(parts)
-        elif len(parts) == 3 and parts[0] == REGISTER_COMMAND:
-            self.register_course(parts)
-        elif len(parts) == 2 and parts[0] == ALLOT_COMMAND:
-            self.allot_course(parts)
-        elif len(parts) == 2 and parts[0] == CANCEL_COMMAND:
-            self.cancel_course(parts)
-        else:
-            print(INPUT_ERROR)
+        key = (len(parts), parts[0])
+
+        handler = self.command_handlers.get(key, self.handle_input_error)
+        handler(parts)
+
+    def handle_input_error(self, parts):
+        print(INPUT_ERROR)
 
     def add_course(self, parts):
         output = self.course_controller.add_course(self.tbl_course, parts)
