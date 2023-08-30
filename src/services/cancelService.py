@@ -1,4 +1,4 @@
-from src.constants import STATUS_CANCEL_ACCEPTED, STATUS_CANCEL_REJECTED
+from src.constants import STATUS_CANCEL_ACCEPTED, STATUS_CANCEL_REJECTED,STATUS_CANCELLED
 from src.helpers.utility import CancelUtility as utility 
 
 class CancelService:
@@ -7,7 +7,7 @@ class CancelService:
         course_registration_id = parts[1]
 
         if utility.cal_is_registration_cancelled(tbl_register, course_registration_id):
-            updated_register = utility.cal_update_status(tbl_register, course_registration_id, 'CANCELLED')
+            updated_register = utility.cal_update_status(tbl_register, course_registration_id, STATUS_CANCELLED)
             return f"{course_registration_id} {STATUS_CANCEL_ACCEPTED}"
         else:
             return f"{course_registration_id} {STATUS_CANCEL_REJECTED}"
